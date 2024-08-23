@@ -1,0 +1,644 @@
+{
+	"info": {
+		"_postman_id": "bf29a985-16ad-412d-af71-531aaab1936b",
+		"name": "Курсовая работа № 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32591395"
+	},
+	"item": [
+		{
+			"name": "Получение расписания",
+			"item": [
+				{
+					"name": "Получение расписания",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var key = \"slotID\" \r",
+									"var value = pm.response.json().data.payload.id  \r",
+									"pm.collectionVariables.set(key, value) \r",
+									" \r",
+									"const parsedResponse = JSON.parse(pm.response.text()); \r",
+									"pm.test(\"Body contains specific value\", function () { \r",
+									"    pm.expect(parsedResponse.data.payload.payload.title).to.eql(\"Название события\"); \r",
+									"});;"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"from\":\"2024-04-14T19:30:00+03:00\",\r\n    \"till\":\"2024-04-15T19:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}events",
+							"host": [
+								"{{BaseURL}}events"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Создание личного события",
+			"item": [
+				{
+					"name": "Создание зеленого личного события",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var key = \"ID\" \r",
+									"var value = \"token_global\"\r",
+									"pm.collectionVariables.set(key, value)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var key = \"slotID\" \r",
+									"var value = pm.response.json().data.payload.id  \r",
+									"pm.collectionVariables.set(key, value) \r",
+									" \r",
+									"const parsedResponse = JSON.parse(pm.response.text()); \r",
+									"pm.test(\"Статус код 200\", function () { \r",
+									"    pm.response.to.have.status(200);to.eql(\"Создание зеленого личного события\"); \r",
+									"});;"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#43B658\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2024-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-14T20:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание личного события в прошлом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var key = \"slotID\" \r",
+									"var value = pm.response.json().data.payload.id  \r",
+									"pm.collectionVariables.set(key, value) \r",
+									" \r",
+									"const parsedResponse = JSON.parse(pm.response.text()); \r",
+									"pm.test(\"Body contains specific value\", function () { \r",
+									"    pm.expect(parsedResponse.data.payload.payload.title).to.eql(\"Создание личного события в прошлом \"); \r",
+									"});;"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#43B658\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2024-04-13T02:00:00+03:00\",\r\n  \"endAt\": \"2024-04-13T02:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание  не существующего личного события",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var key = \"slotID\" \r",
+									"var value = pm.response.json().data.payload.id  \r",
+									"pm.collectionVariables.set(key, value) \r",
+									" \r",
+									"const parsedResponse = JSON.parse(pm.response.text()); \r",
+									"pm.test(\"Body contains specific value\", function () { \r",
+									"    pm.expect(parsedResponse.data.payload.payload.title).to.eql(\"Создание не существующего личного события\"); \r",
+									"});;"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var key = \"slotID\" \r",
+									"var value = pm.response.json().data.payload.id  \r",
+									"pm.collectionVariables.set(key, value) \r",
+									" \r",
+									"const parsedResponse = JSON.parse(pm.response.text()); \r",
+									"pm.test(\"Статус код 200\", function () { \r",
+									"    pm.response.to.have.status(200);to.eql(\"Создание не существующего события\"); \r",
+									"});;"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#sdf6sdf6s67f78\",\r\n  \"description\": \"111\",\r\n  \"title\": \"111\",\r\n  \"startAt\": \"2024-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-14T20:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание личного события в будущем",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var key = \"slotID\" \r",
+									"var value = pm.response.json().data.payload.id  \r",
+									"pm.collectionVariables.set(key, value) \r",
+									" \r",
+									"const parsedResponse = JSON.parse(pm.response.text()); \r",
+									"pm.test(\"Статус код 200\", function () { \r",
+									"    pm.response.to.have.status(200);to.eql(\"Создание личного события в будущем\"); \r",
+									"});;"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#F9EBFF\",\r\n  \"color\": \"#D478F1\",\r\n  \"description\": \"\",\r\n  \"title\": \"745\",\r\n  \"startAt\": \"2024-04-19T17:30:00+03:00\",\r\n  \"endAt\": \"2024-04-19T18:00:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Редактирование личного события",
+			"item": [
+				{
+					"name": "изменить цвет личного события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#81888D\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2024-04-15T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-15T20:30:00+03:00\",\r\n  \"id\":{{id}},\r\n  \"oldStartAt\":\"2024-04-15T20:00:00+03:00\"\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}updatePersonal",
+							"host": [
+								"{{BaseURL}}updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "изменить название личного события",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#81888D\",\r\n  \"description\": \"\",\r\n  \"title\": \"745\",\r\n  \"startAt\": \"2024-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-14T20:30:00+03:00\",\r\n  \"id\":{{id}},\r\n  \"oldStartAt\":\"2024-04-14T20:00:00+03:00\"\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}updatePersonal",
+							"host": [
+								"{{BaseURL}}updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить описание личного события",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#81888D\",\r\n  \"description\": \"курс\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2024-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-14T20:30:00+03:00\",\r\n  \"id\":{{id}},\r\n  \"oldStartAt\":\"2024-04-14T20:00:00+03:00\"\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}updatePersonal",
+							"host": [
+								"{{BaseURL}}updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить время личного события",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#81888D\",\r\n  \"description\": \"курс\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2024-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-14T20:30:00+03:00\",\r\n  \"id\":{{id}},\r\n  \"oldStartAt\":\"2024-04-14T20:00:00+03:00\"\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}updatePersonal",
+							"host": [
+								"{{BaseURL}}updatePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Удаление личного события",
+			"item": [
+				{
+					"name": "Удаление личного события",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":{{id}},\r\n    \"startAt\": \"2024-04-15T20:00:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}removePersonal",
+							"host": [
+								"{{BaseURL}}removePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Негативные проверки",
+			"item": [
+				{
+					"name": "Создание события 10 лет назад",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#43B658\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2014-04-13T02:00:00+03:00\",\r\n  \"endAt\": \"2014-04-13T02:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание личного события  10 лет вперед",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#43B658\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"2034-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2034-04-14T20:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание личного события с не валидной датой",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#43B658\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыр\",\r\n  \"startAt\": \"0000-00-00T20:00:00+03:00\",\r\n  \"endAt\": \"0000-00-00T20:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание  личного события с более 40 символами",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{Cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"backgroundColor\": \"#EBFDF2\",\r\n  \"color\": \"#43B658\",\r\n  \"description\": \"\",\r\n  \"title\": \"Фыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыырррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррррр\",\r\n  \"startAt\": \"2024-04-14T20:00:00+03:00\",\r\n  \"endAt\": \"2024-04-14T20:30:00+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}createPersonal",
+							"host": [
+								"{{BaseURL}}createPersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseURL",
+			"value": "https://api-teachers.skyeng.ru/v2/schedule/",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "96907133",
+			"type": "string"
+		},
+		{
+			"key": "currentDate",
+			"value": "2024-04-14",
+			"type": "string"
+		},
+		{
+			"key": "key",
+			"value": ""
+		},
+		{
+			"key": "ID",
+			"value": ""
+		},
+		{
+			"key": "Cookie",
+			"value": "token_global=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VySWQiOjE0ODk0MjUwLCJpZGVudGl0eSI6InRlc3QudHN0MzQ1QHNreWVuZy5ydSIsImlkZW50aXR5TG9naW4iOm51bGwsImlkZW50aXR5RW1haWwiOiJ0ZXN0LnRzdDM0NUBza3llbmcucnUiLCJpZGVudGl0eVBob25lIjoiKzc5MTY1MDAyMjU1IiwibmFtZSI6Ilx1MDQxMFx1MDQzYlx1MDQzNVx1MDQzYVx1MDQ0MVx1MDQzNVx1MDQzOSIsInN1cm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0LnRzdDM0NUBza3llbmcucnUiLCJ1aUxhbmd1YWdlIjoicnUiLCJsb2NhbGUiOiJydSIsInNlcnZpY2VMb2NhbGUiOm51bGwsInVhcyI6MzAsImp3dFR5cGUiOjEsImp0aSI6IjAzUzNHcWlIT091TXBibjNPVEtobFp3ek05cDBMZ010IiwiYnJhbmQiOm51bGwsImV4cCI6MTcxNDIyNjgyMSwiYmlydGhkYXkiOiIyMDA2LTEwLTEwIiwiYUlzU3Ryb25nIjp0cnVlLCJhVHlwZSI6IlVTRVJOQU1FX1BBU1NXT1JEIiwiYVRpbWUiOjE3MTQxNDAzMjksInJvbGVzIjpbIlJPTEVfVEVBQ0hFUl9DQU5ESURBVEUiLCJST0xFX1RFQUNIRVJfQ0FORElEQVRFX0JBU0VfQUNDRVNTIiwiUk9MRV9UVENfVVNBR0UiLCJST0xFX1ZJTUJPWF9URUFDSEVSX1VTQUdFIiwiUk9MRV9URUFDSEVSIiwiUk9MRV9DUk0yX1RFQUNIRVJfQUNDRVNTIiwiUk9MRV9NQVRIX1RFQUNIRVIiLCJST0xFX01BVEhfQ09OVEVOVF9USEVNRV9WSUVXIl19.oNQX_T5xxX6Ld-HwSsej7XL1yugmZNRjgDOP7UMMusfjDGylyXn9PWjQPgKrF1VH5-zvyKvhdh9r7V4tV7JIUxssHgND_mdRuEJQEn1kEr3VPU8aX-mHCdxViZglUJwjH76Smwz62byMVxxsTQIL7IocqDwwax-owMV3RHyy-kLkNcTcwVdZKGPFVqurfB7R3qClDDP_7yMiKlCRHWbIjhO5MSEg--nUyPvQrW0nXhzCZt6x1XL83y4sbr3MnhbqXRReXlcmY57TkJDSUZ6CsruYnDq7DKgDzWq_paYbaJ18yMFG2c13xNxqBJ1K34dnyRZjNJUc5PTh1W5M8DTYNOyzt_e5I5OKDWgsmCXPuqDNQWPKmZxQe7vaKTHZ-SvBZpYdvc_k4FLMZwN_o4HgPWy5cQ01xOsvZjMXrhsb-svYeV3KAGxv-BgagqfEyCFyxvZ2t3MJXKOct0WdcLPc9gFgNX5tsMITzBRJqDTRjYm_r7YefuzK8rcLxZtuNGet5lbVfpPcastpnEi1gXIUtEhxtAi95yAmiGcuF_Zn_76miM7UyxJMjr254eyJYbdvI_-UTMhUmkYhRf6LdbMY3AgZtbJfUKX84b93HJa9gs5nO_q4w5Qb6_HJim0_hnnJ91aqPAYJTX0qxdbzyx6YWazKMJiu4NxOxzFMlY12Fyc",
+			"type": "string"
+		},
+		{
+			"key": "slotID",
+			"value": ""
+		}
+	]
+}
